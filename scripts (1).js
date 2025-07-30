@@ -44,8 +44,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const projects = {
             project1: {
                 title: 'Mineral Mapping in XYZ Region',
-                description: 'Conducted geological surveys and GIS mapping to identify copper deposits in the XYZ region, delivering detailed resource maps.',
-                tools: 'Tools: QGIS, Python',
+                description: 'Geological Mapping of different regions, delivering detailed resource maps.',
+                tools: 'Tools: Acr GIS, Python, Google Earth Pro',
                 link: 'https://github.com/asifkhan/mineral-mapping',
             },
             project2: {
@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 link: 'https://github.com/asifkhan/flood-risk',
             },
             project3: {
-                title: 'Geotechnical Analysis for Bridge',
-                description: 'Performed soil testing and stability analysis for a bridge construction project, ensuring structural safety.',
-                tools: 'Tools: ArcGIS, GPS Survey',
-                link: '',
+                title: 'Geotechnical Lab Testing app',
+                description: 'Created Geotechnical lab testing app to minimize errors in calculation.',
+                tools: 'Tools: streamlit, NumPy, Pandas, plotpy',
+                link: 'https://huggingface.co/spaces/Asifkhan-12/Geotechnical_testing_app',
             },
         };
 
