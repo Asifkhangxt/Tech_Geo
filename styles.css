@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.smooth-scroll {
+    scroll-behavior: smooth;
+}
+
+nav ul li a {
+    transition: color 0.3s ease;
+}
+
+section {
+    scroll-margin-top: 80px;
+}
+
+.animate-fade-in {
+    animation: fadeIn 1s ease-in-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 1s ease-in-out;
+}
+
+.skill-card:hover {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes slideUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+@layer base {
+    @tailwind colors;
+    @variants responsive {
+        .bg-beige-100 { background-color: #f5f5f0; }
+        .bg-beige-200 { background-color: #e8e8e0; }
+    }
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .grid-cols-4 {
+        grid-template-columns: 1fr;
+    }
+    .grid-cols-3 {
+        grid-template-columns: 1fr;
+    }
+    .md\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}

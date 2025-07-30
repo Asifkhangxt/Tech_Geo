@@ -1,0 +1,186 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asif Khan - Geologist Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+    <!-- Navigation -->
+    <nav class="bg-gray-100 text-gray-800 fixed top-0 w-full z-50 shadow-sm">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold">Asif Khan</div>
+            <ul class="flex space-x-6">
+                <li><a href="#home" class="hover:text-green-700 smooth-scroll transition-colors duration-300">Home</a></li>
+                <li><a href="#about" class="hover:text-green-700 smooth-scroll transition-colors duration-300">About</a></li>
+                <li><a href="#services" class="hover:text-green-700 smooth-scroll transition-colors duration-300">Services</a></li>
+                <li><a href="#projects" class="hover:text-green-700 smooth-scroll transition-colors duration-300">Projects</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="min-h-screen flex items-center bg-gradient-to-b from-gray-100 to-beige-100">
+        <div class="container mx-auto px-4 text-center">
+            <img src="assets/profile-photo.jpg" alt="Asif Khan" class="w-48 h-48 rounded-full mx-auto mb-6 border-4 border-green-200 shadow-sm">
+            <h1 class="text-5xl font-bold text-gray-800 mb-4">Asif Khan</h1>
+            <h2 class="text-2xl text-green-700 mb-6">Geologist | GIS Specialist | Geotechnical Analyst</h2>
+            <p class="text-lg text-gray-700 max-w-2xl mx-auto">With a Master’s in Geology and over 5 years of experience, I deliver innovative solutions in GIS mapping, geotechnical investigations, and flood risk assessments for sustainable development.</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-10 text-green-800">About Me</h2>
+            <p class="text-lg max-w-3xl mx-auto mb-8 text-gray-700">I’m a passionate geologist with expertise in GIS mapping, GPS-based surveying, and geotechnical site investigations. My work spans mineral exploration, flood risk modeling, and data visualization using tools like Python and Streamlit, ensuring impactful and sustainable outcomes.</p>
+            <h3 class="text-2xl font-semibold mb-6 text-center text-green-800">Skills</h3>
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">Geological & Geotechnical Expertise</h4>
+                    <p class="text-gray-600">Strong foundation in geology with experience in site investigations, material testing, and mineral exploration.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">GIS & Remote Sensing</h4>
+                    <p class="text-gray-600">Proficient in mapping, spatial analysis, and working with satellite data using tools like ArcGIS and QGIS.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">Data Collection & Processing</h4>
+                    <p class="text-gray-600">Skilled in GPS-based field data acquisition, data cleaning, and integration with geospatial platforms.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">Machine Learning & Model Training</h4>
+                    <p class="text-gray-600">Experience in creating and training ML models for geospatial analysis, including landslide and flood prediction.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">Database Management</h4>
+                    <p class="text-gray-600">Practical knowledge of MySQL for storing, managing, and querying geospatial and scientific data.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">Web App Development</h4>
+                    <p class="text-gray-600">Ability to build web-based applications using Streamlit, Python, and visualization libraries for domain-specific tasks.</p>
+                </div>
+                <div class="skill-card bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+                    <h4 class="text-xl font-semibold text-green-700 mb-2">Programming & Scripting</h4>
+                    <p class="text-gray-600">Fluent in Python, with experience using Pandas, NumPy, and Scikit-learn for data-driven workflows.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-10 text-green-800">Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-300">
+                    <h3 class="text-xl font-semibold mb-2 text-green-700">Model Training</h3>
+                    <p class="text-gray-700">Building and training machine learning models tailored for geospatial and geological datasets.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-300">
+                    <h3 class="text-xl font-semibold mb-2 text-green-700">Geological Mapping</h3>
+                    <p class="text-gray-700">Creating accurate, high-resolution geological maps using GIS tools and remote sensing data.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-300">
+                    <h3 class="text-xl font-semibold mb-2 text-green-700">Flood Risk Modelling</h3>
+                    <p class="text-gray-700">Analyzing terrain and hydrological data to predict and visualize flood-prone areas.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:bg-gray-50 transition-colors duration-300">
+                    <h3 class="text-xl font-semibold mb-2 text-green-700">Web-Based App Creation</h3>
+                    <p class="text-gray-700">Developing user-friendly web apps that solve specific geoscience and engineering problems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-10 text-green-800">Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('project1')">
+                    <img src="assets/project1.jpg" alt="Project 1" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Mineral Mapping in XYZ Region</h3>
+                    <p class="text-gray-700">Conducted surveys to identify copper deposits.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('project2')">
+                    <img src="assets/project2.jpg" alt="Project 2" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Flood Risk Model</h3>
+                    <p class="text-gray-700">Developed a Streamlit app for flood prediction.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('project3')">
+                    <img src="assets/project3.jpg" alt="Project 3" class="w-full h-40 object-cover rounded mb-4">
+                    <h3 class="text-xl font-semibold mb-2">Geotechnical Analysis</h3>
+                    <p class="text-gray-700">Soil testing for bridge construction.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+        <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+            <div class="bg-white p-8 rounded-lg max-w-lg w-full">
+                <h3 id="modal-title" class="text-2xl font-bold mb-4"></h3>
+                <p id="modal-description" class="text-gray-700 mb-4"></p>
+                <p id="modal-tools" class="text-sm text-gray-600 mb-4"></p>
+                <a id="modal-link" href="#" class="text-green-700 hover:underline mb-4 block"></a>
+                <button onclick="closeModal()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-500">Close</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Links -->
+    <div class="text-center py-6">
+        <a href="https://github.com/asifkhan" class="text-3xl mx-4 text-green-700 hover:text-green-500 transition-colors"><i class="fab fa-github"></i></a>
+        <a href="https://linkedin.com/in/asifkhan" class="text-3xl mx-4 text-green-700 hover:text-green-500 transition-colors"><i class="fab fa-linkedin"></i></a>
+        <a href="mailto:asifkhan@example.com" class="text-3xl mx-4 text-green-700 hover:text-green-500 transition-colors"><i class="fas fa-envelope"></i></a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-100 text-gray-800 py-6 text-center">
+        <p>&copy; 2025 Asif Khan. All rights reserved.</p>
+    </footer>
+
+    <script src="js/scripts.js"></script>
+</body>
+</html>
